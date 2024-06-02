@@ -1,0 +1,25 @@
+'use strict';
+var dbConn = require('./../../config/db.config');
+
+//User object create
+var User = function (user) {
+  this.user_name = user.user_name;
+  this.password = user.password;
+  this.created_at = new Date();
+  this.updated_at = new Date();
+};
+
+User.login = function (user, result) {
+  console.log('user', user)
+  dbConn.query('SELECT * FROM user WHERE user_name = ? AND password = ?', [user.user_name, user.password], function (err, res) {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+    }
+    else {
+      result(null, res);
+    }
+  });
+};
+
+module.exports = User;
