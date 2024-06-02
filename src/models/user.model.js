@@ -9,6 +9,28 @@ var User = function (user) {
   this.updated_at = new Date();
 };
 
+User.findByUserName = function (user, result) {
+  dbConn.query('SELECT * FROM user WHERE user_name = ?', user.user_name, function (err, res) {
+    if (err) {
+      console.log('error: ', err);
+      result(err, null);
+    } else {
+      result(null, res);
+    }
+  });
+};
+
+User.register = function (user, result) {
+  dbConn.query('INSERT INTO user (user_name, password) VALUES (?, ?)', [user.user_name, user.password], function (err, res) {
+    if (err) {
+      console.log('error: ', err);
+      result(err, null);
+    } else {
+      result(null, res.insertId);
+    }
+  });
+};
+
 User.login = function (user, result) {
   console.log('user', user)
   dbConn.query('SELECT * FROM user WHERE user_name = ? AND password = ?', [user.user_name, user.password], function (err, res) {
