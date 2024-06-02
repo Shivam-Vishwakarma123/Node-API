@@ -32,7 +32,7 @@ User.register = function (user, result) {
 };
 
 User.login = function (user, result) {
-  console.log('user', user)
+  console.log('hii_user', user)
   dbConn.query('SELECT * FROM user WHERE user_name = ? AND password = ?', [user.user_name, user.password], function (err, res) {
     if (err) {
       console.log("error: ", err);
@@ -40,6 +40,7 @@ User.login = function (user, result) {
     }
     else {
       result(null, res);
+      console.log('hii_res', res)
     }
   });
 };
