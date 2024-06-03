@@ -33,14 +33,13 @@ User.register = function (user, result) {
 
 User.login = function (user, result) {
   console.log('hii_user', user)
-  dbConn.query('SELECT * FROM user WHERE user_name = ? AND password = ?', [user.user_name, user.password], function (err, res) {
+  dbConn.query('SELECT * FROM user WHERE user_name = ?', [user.user_name], function (err, res) {
     if (err) {
       console.log("error: ", err);
       result(err, null);
     }
     else {
-      result(null, res);
-      console.log('hii_res', res)
+      result(null, res[0]);
     }
   });
 };

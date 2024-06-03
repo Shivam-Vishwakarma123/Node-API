@@ -12,7 +12,7 @@ exports.login = function (req, res) {
     res.status(400).send({ error: true, message: 'Please provide correct credentials' });
   } else {
     User.login(new_user, function (err, User) {
-      console.log('uset_test', User)
+      console.log('uset_test', User.password)
       if (err)
         res.send(err);
       if (User.length === 0) {
@@ -26,7 +26,7 @@ exports.login = function (req, res) {
         if (!isMatch) {
           return res.status(400).send({ error: true, message: 'Incorrect password' });
         }
-        const tokenPayload = { id: User[0].id, username: User[0].user_name };
+        const tokenPayload = { id: User.id, username: User.user_name };
         jwt.sign(tokenPayload, 'your_secret_key', (err, token) => {
           if (err) return res.sendStatus(500);
           res.json({ error: false, message: "User verified successfully!", data: User, token: token });
