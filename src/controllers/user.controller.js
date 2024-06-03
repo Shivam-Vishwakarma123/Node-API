@@ -12,7 +12,6 @@ exports.login = function (req, res) {
     res.status(400).send({ error: true, message: 'Please provide correct credentials' });
   } else {
     User.login(new_user, function (err, User) {
-      console.log('uset_test', User.password)
       if (err)
         res.send(err);
       if (User.length === 0) {

@@ -35,7 +35,6 @@ User.login = function (user, result) {
   console.log('hii_user', user)
   dbConn.query('SELECT * FROM user WHERE user_name = ?', [user.user_name], function (err, res) {
     if (err) {
-      console.log("error: ", err);
       result(err, null);
     }
     else {
