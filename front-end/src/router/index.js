@@ -2,6 +2,7 @@ import {Routes, Route} from 'react-router-dom'
 import Home from '../pages/Home.js'
 import About from '../pages/About.js'
 import Contact from '../pages/Contact.js'
+import EmployeeList from '../pages/Employee.js'
 
 function MyRouter() {
     return(
@@ -10,6 +11,7 @@ function MyRouter() {
             <Route path='/home' element={ <Home />} />
             <Route path='/about-us' element={ <About />} />
             <Route path='/contact-us' element={ <Contact />} />
+            <Route path='/employee' element={ <EmployeeList />} />
         </Routes>
     )
 }

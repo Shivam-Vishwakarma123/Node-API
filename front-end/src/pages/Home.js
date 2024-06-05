@@ -1,7 +1,7 @@
 function Home() {
     return (
       <div className="App">
-        <h2>Home</h2>
+        <h2 className="container my-5">Home</h2>
       </div>
     );
   }
