@@ -1,38 +1,30 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom"
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-
-// async function employee() {
-//     var token = sessionStorage.getItem('token')
-//     return fetch("http://localhost:5000/api/v1/employees", {
-//         method: "GET",
-//         headers: {
-//             "Content-Type": "application/json",
-//             "Authorization": `Bearer ${token.token}`,
-//         },
-//     }).then((response) => response.json());
-// }
+async function fetchEmployees(token) {
+    return fetch("http://localhost:5000/api/v1/employees", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+    }).then((response) => response.json());
+}
 
 function EmployeeList() {
-    const [employee, setEmployee] = useState([]);
-    const handlEmployee = async e => {
-        // e.preventDefault();
-        const token = await employee();
-        setEmployee(token);
-    }
+    const [employees, setEmployees] = useState([]);
 
-    useEffect(async () => {
-        var token = sessionStorage.getItem('token');
-        console.log('token', token=>token)
-        const response = await fetch("http://localhost:5000/api/v1/employees", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token.token}`,
-            },
-        });
-        return await response.json();
-    });
+    useEffect(() => {
+        async function getEmployees() {
+            var token = sessionStorage.getItem("token");
+            var secure_token = JSON.parse(token)
+            if (token) {
+                const employeeData = await fetchEmployees(secure_token.token);
+                setEmployees(employeeData);
+            }
+        }
+        getEmployees();
+    }, []);
 
     return (
         <div className="container my-5">
@@ -40,8 +32,11 @@ function EmployeeList() {
                 <div className="col-md-12">
                     <div className="card">
                         <div className="card-header">
-                            <h4>Employee List
-                                <Link to="/" className="btn btn-primary float-end">Add Employee</Link>
+                            <h4>
+                                Employee List
+                                <Link to="/" className="btn btn-primary float-end">
+                                    Add Employee
+                                </Link>
                             </h4>
                         </div>
                         <div className="card-body">
@@ -58,14 +53,32 @@ function EmployeeList() {
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-
+                                <tbody>
+                                    {employees.map((employee) => (
+                                        <tr key={employee.id}>
+                                            <td>{employee.id}</td>
+                                            <td>{employee.first_name}</td>
+                                            <td>{employee.last_name}</td>
+                                            <td>{employee.email}</td>
+                                            <td>{employee.phone}</td>
+                                            <td>{employee.organization}</td>
+                                            <td>{employee.designation}</td>
+                                            <td>
+                                                {/* Add appropriate actions here */}
+                                                <Link className="btn btn-success me-2">Edit</Link>
+                                                <Link className="btn btn-danger">Delete</Link>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
-export default EmployeeList
+
+export default EmployeeList;
