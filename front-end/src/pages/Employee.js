@@ -34,7 +34,7 @@ function EmployeeList() {
                         <div className="card-header">
                             <h4>
                                 Employee List
-                                <Link to="/" className="btn btn-primary float-end">
+                                <Link to="/add-employee" className="btn btn-primary float-end">
                                     Add Employee
                                 </Link>
                             </h4>
