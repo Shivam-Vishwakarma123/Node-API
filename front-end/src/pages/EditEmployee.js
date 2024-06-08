@@ -38,9 +38,10 @@ function EditEmployee() {
         async function getEmployee() {
             var token = sessionStorage.getItem("token");
             var secure_token = JSON.parse(token);
-            if (token) {
+            if (secure_token.token) {
                 const employeeData = await fetchEmployee(id, secure_token.token);
-                setEmployee(employeeData);
+                setEmployee(employeeData[0]);
+                console.log('This is set emp data : ', employeeData)
             }
         }
         getEmployee();
@@ -56,25 +57,16 @@ function EditEmployee() {
         var token = sessionStorage.getItem("token");
         var secure_token = JSON.parse(token);
         if (token) {
-            await updateEmployee(id, employee, secure_token.token);
-            navigate("/");
+            const response = await updateEmployee(id, employee, secure_token.token);
+            alert(response.message);
+            navigate("/employee");
         }
     };
-
-    // Ensure that the inputs always have defined values to avoid switching between controlled/uncontrolled
-    const {
-        first_name,
-        last_name,
-        email,
-        phone,
-        organization,
-        designation
-    } = employee;
 
     return (
         <div className="container my-5">
             <div className="row">
-                <div className="col-md-6 offset-md-3">
+                <div className="col-md-6 offset-md-3 col-12">
                     <div className="card">
                         <div className="card-header">
                             <h4>Edit Employee</h4>
@@ -86,7 +78,7 @@ function EditEmployee() {
                                     <input
                                         type="text"
                                         name="first_name"
-                                        value={first_name || ""}
+                                        value={employee.first_name}
                                         onChange={handleChange}
                                         className="form-control"
                                     />
@@ -96,7 +88,7 @@ function EditEmployee() {
                                     <input
                                         type="text"
                                         name="last_name"
-                                        value={last_name || ""}
+                                        value={employee.last_name}
                                         onChange={handleChange}
                                         className="form-control"
                                     />
@@ -106,7 +98,7 @@ function EditEmployee() {
                                     <input
                                         type="email"
                                         name="email"
-                                        value={email || ""}
+                                        value={employee.email}
                                         onChange={handleChange}
                                         className="form-control"
                                     />
@@ -116,7 +108,7 @@ function EditEmployee() {
                                     <input
                                         type="text"
                                         name="phone"
-                                        value={phone || ""}
+                                        value={employee.phone}
                                         onChange={handleChange}
                                         className="form-control"
                                     />
@@ -126,7 +118,7 @@ function EditEmployee() {
                                     <input
                                         type="text"
                                         name="organization"
-                                        value={organization || ""}
+                                        value={employee.organization}
                                         onChange={handleChange}
                                         className="form-control"
                                     />
@@ -136,7 +128,7 @@ function EditEmployee() {
                                     <input
                                         type="text"
                                         name="designation"
-                                        value={designation || ""}
+                                        value={employee.designation}
                                         onChange={handleChange}
                                         className="form-control"
                                     />

@@ -1,5 +1,5 @@
 import React from 'react';
-import MyRouter from './router/index.js';
+import MyRouter from './router/routes.js';
 import Navbar from './components/navbar.js';
 import Login from './login/Login.js';
 import useToken from './login/useToken.js';

@@ -4,6 +4,7 @@ import About from '../pages/About.js'
 import Contact from '../pages/Contact.js'
 import EmployeeList from '../pages/Employee.js'
 import AddEmployee from '../pages/AddEmployee.js'
+import EditEmployee from '../pages/EditEmployee.js'
 
 function MyRouter() {
     return(
@@ -14,6 +15,9 @@ function MyRouter() {
             <Route path='/contact-us' element={ <Contact />} />
             <Route path='/employee' element={ <EmployeeList />} />
             <Route path='/add-employee' element={ <AddEmployee />} />
+            <Route path='/add-employee' element={ <AddEmployee />} />
+            <Route path='/employee/edit/:id' element={ <EditEmployee />} />
+            {/* <Route path='/employee/delete/:id' element={ <DeleteEmployee />} /> */}
         </Routes>
     )
 }

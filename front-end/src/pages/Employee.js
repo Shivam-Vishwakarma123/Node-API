@@ -11,6 +11,16 @@ async function fetchEmployees(token) {
     }).then((response) => response.json());
 }
 
+async function deleteEmployee(id, token) {
+    return fetch(`http://localhost:5000/api/v1/employees/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+    }).then((response) => response.json());
+}
+
 function EmployeeList() {
     const [employees, setEmployees] = useState([]);
 
@@ -65,8 +75,8 @@ function EmployeeList() {
                                             <td>{employee.designation}</td>
                                             <td>
                                                 {/* Add appropriate actions here */}
-                                                <Link className="btn btn-success me-2">Edit</Link>
-                                                <Link className="btn btn-danger">Delete</Link>
+                                                <Link to={`/employee/edit/${employee.id}`} className="btn btn-success me-2">Edit</Link>
+                                                <Link to={`/employee/delete/${employee.id}`} className="btn btn-danger">Delete</Link>
                                             </td>
                                         </tr>
                                     ))}
@@ -79,6 +89,5 @@ function EmployeeList() {
         </div>
     );
 }
-
 
 export default EmployeeList;
