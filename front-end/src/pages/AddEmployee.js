@@ -1,75 +1,63 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-async function fetchEmployee(id, token) {
-    return fetch(`http://localhost:5000/api/v1/employees/${id}`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-        },
-    }).then((response) => response.json());
+async function fetchEmployees(data, token) {
+    return fetch("http://localhost:5000/api/v1/employees", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+}).then((response) => response.json());
 }
 
-async function updateEmployee(id, data, token) {
-    return fetch(`http://localhost:5000/api/v1/employees/${id}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
-    }).then((response) => response.json());
-}
-
-function EditEmployee() {
-    const { id } = useParams();
+function AddEmployee() {
+    
+    // Use page navigate Hook
     const navigate = useNavigate();
-    const [employee, setEmployee] = useState({
+    // Manage the state
+    const initialEmployeeState = {
         first_name: "",
         last_name: "",
         email: "",
         phone: "",
         organization: "",
-        designation: ""
-    });
+        designation: "",
+        salary: "",
+    };
+    const [employee, setEmployee] = useState(initialEmployeeState);
 
-    useEffect(() => {
-        async function getEmployee() {
-            var token = sessionStorage.getItem("token");
-            var secure_token = JSON.parse(token);
-            if (token) {
-                const employeeData = await fetchEmployee(id, secure_token.token);
-                setEmployee(employeeData);
-            }
-        }
-        getEmployee();
-    }, [id]);
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setEmployee({ ...employee, [name]: value });
+    // Handle the input
+    const handleInput = (e) => {
+        setEmployee({ ...employee, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = async (e) => {
+    // Save the employee into the db using API & reset the field after adding the data
+    const saveEmployee = async (e) => {
         e.preventDefault();
+        const data = {
+            first_name: employee.first_name,
+            last_name: employee.last_name,
+            email: employee.email,
+            phone: employee.phone,
+            organization: employee.organization,
+            designation: employee.designation,
+            salary: employee.salary,
+        };
         var token = sessionStorage.getItem("token");
         var secure_token = JSON.parse(token);
-        if (token) {
-            await updateEmployee(id, employee, secure_token.token);
-            navigate("/");
+
+        const response = await fetchEmployees(data, secure_token.token)
+
+        if (response.message) {
+            setEmployee(initialEmployeeState); // Reset the form fields
+            alert(response.message);
+            navigate("/employee");
+        } else {
+            window.confirm("Something Wrong....")
         }
     };
-
-    // Ensure that the inputs always have defined values to avoid switching between controlled/uncontrolled
-    const {
-        first_name,
-        last_name,
-        email,
-        phone,
-        organization,
-        designation
-    } = employee;
 
     return (
         <div className="container my-5">
@@ -77,71 +65,91 @@ function EditEmployee() {
                 <div className="col-md-6 offset-md-3">
                     <div className="card">
                         <div className="card-header">
-                            <h4>Edit Employee</h4>
+                            <h4 className="text-center">Add New Employee</h4>
                         </div>
                         <div className="card-body">
-                            <form onSubmit={handleSubmit}>
-                                <div className="mb-3">
+                            <form onSubmit={saveEmployee}>
+                                <div className="form-group">
                                     <label>First Name</label>
                                     <input
                                         type="text"
-                                        name="first_name"
-                                        value={first_name || ""}
-                                        onChange={handleChange}
                                         className="form-control"
+                                        name="first_name"
+                                        value={employee.first_name}
+                                        onChange={handleInput}
+                                        placeholder="Enter First Name"
                                     />
                                 </div>
-                                <div className="mb-3">
+                                <div className="form-group">
                                     <label>Last Name</label>
                                     <input
                                         type="text"
-                                        name="last_name"
-                                        value={last_name || ""}
-                                        onChange={handleChange}
                                         className="form-control"
+                                        name="last_name"
+                                        value={employee.last_name}
+                                        onChange={handleInput}
+                                        placeholder="Enter Last Name"
                                     />
                                 </div>
-                                <div className="mb-3">
+                                <div className="form-group">
                                     <label>Email</label>
                                     <input
-                                        type="email"
-                                        name="email"
-                                        value={email || ""}
-                                        onChange={handleChange}
+                                        type="text"
                                         className="form-control"
+                                        name="email"
+                                        value={employee.email}
+                                        onChange={handleInput}
+                                        placeholder="Enter your Email"
                                     />
                                 </div>
-                                <div className="mb-3">
+                                <div className="form-group">
                                     <label>Phone</label>
                                     <input
                                         type="text"
-                                        name="phone"
-                                        value={phone || ""}
-                                        onChange={handleChange}
                                         className="form-control"
+                                        name="phone"
+                                        value={employee.phone}
+                                        onChange={handleInput}
+                                        placeholder="Enter your Phone"
                                     />
                                 </div>
-                                <div className="mb-3">
+                                <div className="form-group">
                                     <label>Organization</label>
                                     <input
                                         type="text"
-                                        name="organization"
-                                        value={organization || ""}
-                                        onChange={handleChange}
                                         className="form-control"
+                                        name="organization"
+                                        value={employee.organization}
+                                        onChange={handleInput}
+                                        placeholder="Enter your Organization"
                                     />
                                 </div>
-                                <div className="mb-3">
+                                <div className="form-group">
                                     <label>Designation</label>
                                     <input
                                         type="text"
-                                        name="designation"
-                                        value={designation || ""}
-                                        onChange={handleChange}
                                         className="form-control"
+                                        name="designation"
+                                        value={employee.designation}
+                                        onChange={handleInput}
+                                        placeholder="Enter your Designation"
                                     />
                                 </div>
-                                <button type="submit" className="btn btn-primary">Update</button>
+                                <div className="form-group">
+                                    <label>Salary</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        name="salary"
+                                        value={employee.salary}
+                                        onChange={handleInput}
+                                        placeholder="Enter your Salary"
+                                    />
+                                </div>
+                                <br />
+                                <button type="submit" className="btn btn-primary">
+                                    Add
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -151,4 +159,4 @@ function EditEmployee() {
     );
 }
 
-export default EditEmployee;
+export default AddEmployee;

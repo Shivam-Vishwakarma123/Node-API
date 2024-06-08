@@ -23,6 +23,7 @@ async function updateEmployee(id, data, token) {
 }
 
 function EditEmployee() {
+    // Use parameter, page navigate, set variable Hook
     const { id } = useParams();
     const navigate = useNavigate();
     const [employee, setEmployee] = useState({
@@ -58,8 +59,12 @@ function EditEmployee() {
         var secure_token = JSON.parse(token);
         if (token) {
             const response = await updateEmployee(id, employee, secure_token.token);
-            alert(response.message);
-            navigate("/employee");
+            if(response){
+                alert(response.message);
+                navigate("/employee");
+            }else{
+                window.confirm("Something Wrong....")
+            }
         }
     };
 
@@ -133,7 +138,7 @@ function EditEmployee() {
                                         className="form-control"
                                     />
                                 </div>
-                                <button type="submit" className="btn btn-primary">Update</button>
+                                <button type="submit" className="btn btn-primary">Edit</button>
                             </form>
                         </div>
                     </div>
