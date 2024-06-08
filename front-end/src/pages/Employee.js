@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+// Get all the employee
 async function fetchEmployees(token) {
     return fetch("http://localhost:5000/api/v1/employees", {
         method: "GET",
@@ -11,6 +12,7 @@ async function fetchEmployees(token) {
     }).then((response) => response.json());
 }
 
+// Delete the emlpoyee
 async function deleteEmployee(id, token) {
     return fetch(`http://localhost:5000/api/v1/employees/${id}`, {
         method: "DELETE",
@@ -35,6 +37,18 @@ function EmployeeList() {
         }
         getEmployees();
     }, []);
+
+    // To handle the delte functionality
+    const handleDelete = async (id) => {
+        if(!window.confirm('Are you want to delete ?'))
+            return
+        var token = sessionStorage.getItem("token");
+        var secure_token = JSON.parse(token);
+        if (token) {
+            await deleteEmployee(id, secure_token.token);
+            setEmployees(employees.filter(employee => employee.id !== id));
+        }
+    };
 
     return (
         <div className="container my-5">
@@ -76,7 +90,7 @@ function EmployeeList() {
                                             <td>
                                                 {/* Add appropriate actions here */}
                                                 <Link to={`/employee/edit/${employee.id}`} className="btn btn-success me-2">Edit</Link>
-                                                <Link to={`/employee/delete/${employee.id}`} className="btn btn-danger">Delete</Link>
+                                                <Link onClick={() => handleDelete(employee.id)} className="btn btn-danger">Delete</Link>
                                             </td>
                                         </tr>
                                     ))}
