@@ -76,7 +76,7 @@ function EditEmployee() {
                         <div className="card-header">
                             <h4>
                                 Edit Employee
-                                <Link to="/employee" className="btn btn-primary float-end">Go Back</Link>
+                                <Link to="/employee" className="btn btn-danger float-end">Go Back</Link>
                             </h4>
                         </div>
                         <div className="card-body">
@@ -141,7 +141,7 @@ function EditEmployee() {
                                         className="form-control"
                                     />
                                 </div>
-                                <button type="submit" className="btn btn-primary">Edit</button>
+                                <button type="submit" className="btn btn-primary px-4 py-2">Edit</button>
                             </form>
                         </div>
                     </div>

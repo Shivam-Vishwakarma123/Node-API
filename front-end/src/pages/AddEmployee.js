@@ -68,7 +68,7 @@ function AddEmployee() {
                         <div className="card-header">
                             <h4>
                                 Add Employee
-                                <Link to="/employee" className="btn btn-primary float-end">Go Back</Link>
+                                <Link to="/employee" className="btn btn-danger float-end">Go Back</Link>
                             </h4>
                         </div>
                         <div className="card-body">
@@ -151,7 +151,7 @@ function AddEmployee() {
                                     />
                                 </div>
                                 <br />
-                                <button type="submit" className="btn btn-primary">
+                                <button type="submit" className="btn btn-primary px-4 py-2">
                                     Add
                                 </button>
                             </form>
