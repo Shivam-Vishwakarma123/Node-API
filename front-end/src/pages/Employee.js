@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import $ from 'jquery';
+import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
+import 'datatables.net-bs5';
 
 // Get all the employee
 async function fetchEmployees(token) {
@@ -38,9 +41,18 @@ function EmployeeList() {
         getEmployees();
     }, []);
 
+    useEffect(() => {
+        if (employees.length > 0) {
+            // Initialize DataTables
+            $(document).ready(function () {
+                $('#employeeTable').DataTable();
+            });
+        }
+    }, [employees]);
+
     // To handle the delte functionality
     const handleDelete = async (id) => {
-        if(!window.confirm('Are you want to delete ?'))
+        if (!window.confirm('Are you want to delete ?'))
             return
         var token = sessionStorage.getItem("token");
         var secure_token = JSON.parse(token);
@@ -58,44 +70,44 @@ function EmployeeList() {
                         <div className="card-header">
                             <h4>
                                 Employee List
-                                <Link to="/add-employee" className="btn btn-primary float-end">
-                                    Add Employee
-                                </Link>
+                                <Link to="/add-employee" className="btn btn-primary float-end">Add Employee</Link>
                             </h4>
                         </div>
-                        <div className="card-body">
-                            <table className="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Organization</th>
-                                        <th>Designation</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {employees.map((employee) => (
-                                        <tr key={employee.id}>
-                                            <td>{employee.id}</td>
-                                            <td>{employee.first_name}</td>
-                                            <td>{employee.last_name}</td>
-                                            <td>{employee.email}</td>
-                                            <td>{employee.phone}</td>
-                                            <td>{employee.organization}</td>
-                                            <td>{employee.designation}</td>
-                                            <td>
-                                                {/* Add appropriate actions here */}
-                                                <Link to={`/employee/edit/${employee.id}`} className="btn btn-success me-2">Edit</Link>
-                                                <Link onClick={() => handleDelete(employee.id)} className="btn btn-danger">Delete</Link>
-                                            </td>
+                        <div className="card-body ">
+                            <div className="table-responsive">
+                                <table id="employeeTable" className="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Organization</th>
+                                            <th>Designation</th>
+                                            <th>Actions</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {employees.map((employee) => (
+                                            <tr key={employee.id}>
+                                                <td>{employee.id}</td>
+                                                <td>{employee.first_name}</td>
+                                                <td>{employee.last_name}</td>
+                                                <td>{employee.email}</td>
+                                                <td>{employee.phone}</td>
+                                                <td>{employee.organization}</td>
+                                                <td>{employee.designation}</td>
+                                                <td>
+                                                    {/* Add appropriate actions here */}
+                                                    <Link to={`/employee/edit/${employee.id}`} className="btn btn-success me-2">Edit</Link>
+                                                    <Link onClick={() => handleDelete(employee.id)} className="btn btn-danger">Delete</Link>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

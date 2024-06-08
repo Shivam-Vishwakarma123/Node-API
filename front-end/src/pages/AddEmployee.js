@@ -1,19 +1,19 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 async function fetchEmployees(data, token) {
     return fetch("http://localhost:5000/api/v1/employees", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(data),
-}).then((response) => response.json());
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+    }).then((response) => response.json());
 }
 
 function AddEmployee() {
-    
+
     // Use page navigate Hook
     const navigate = useNavigate();
     // Manage the state
@@ -51,7 +51,8 @@ function AddEmployee() {
         const response = await fetchEmployees(data, secure_token.token)
 
         if (response.message) {
-            setEmployee(initialEmployeeState); // Reset the form fields
+            // Reset the form fields
+            setEmployee(initialEmployeeState);
             alert(response.message);
             navigate("/employee");
         } else {
@@ -65,7 +66,10 @@ function AddEmployee() {
                 <div className="col-md-6 offset-md-3">
                     <div className="card">
                         <div className="card-header">
-                            <h4 className="text-center">Add New Employee</h4>
+                            <h4>
+                                Add Employee
+                                <Link to="/employee" className="btn btn-primary float-end">Go Back</Link>
+                            </h4>
                         </div>
                         <div className="card-body">
                             <form onSubmit={saveEmployee}>

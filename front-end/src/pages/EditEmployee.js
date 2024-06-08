@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 async function fetchEmployee(id, token) {
     return fetch(`http://localhost:5000/api/v1/employees/${id}`, {
@@ -59,10 +59,10 @@ function EditEmployee() {
         var secure_token = JSON.parse(token);
         if (token) {
             const response = await updateEmployee(id, employee, secure_token.token);
-            if(response){
+            if (response) {
                 alert(response.message);
                 navigate("/employee");
-            }else{
+            } else {
                 window.confirm("Something Wrong....")
             }
         }
@@ -74,7 +74,10 @@ function EditEmployee() {
                 <div className="col-md-6 offset-md-3 col-12">
                     <div className="card">
                         <div className="card-header">
-                            <h4>Edit Employee</h4>
+                            <h4>
+                                Edit Employee
+                                <Link to="/employee" className="btn btn-primary float-end">Go Back</Link>
+                            </h4>
                         </div>
                         <div className="card-body">
                             <form onSubmit={handleSubmit}>
